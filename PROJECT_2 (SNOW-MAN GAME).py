@@ -430,13 +430,18 @@ def completed(trys):
 
     enter = textinput("Do you wanna play again?", "1) Yes \n2) No")
     
-    if enter == "1" or enter == "yes":
+    if enter == "1" or enter.casefold() == "yes".casefold():
         speed(0)
         clear()
         display_game()
-    elif enter == "2" or enter == "no":
+    elif enter == "2" or enter.casefold() == "no".casefold():
         exit()   
 
+    else:
+        textinput("Not A Valid Input", "Try again!")
+        speed(0)
+        clear()        
+        display_game()
     return True
 
 # Asking Computer to pick word
