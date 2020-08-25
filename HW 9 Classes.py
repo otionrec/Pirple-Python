@@ -2,6 +2,8 @@
 import time
 import sys
 from termcolor import colored, cprint
+import json
+import os
 #import pickle
 
 # define vehicle class - parent class
@@ -44,6 +46,9 @@ class Vehicle:
         self.tripsSinceMaintenance = 0
         self.needsMaintenance = False
 
+    def makedict(self):
+        return {'company': self.make, 'model': self.model, 'year': self.year, 'weight': self.weight, 'nm': self.needsMaintenance, 'tsm': self.tripsSinceMaintenance, 'is_driving': False}
+
 # Defining Cars class - inherited from vehicle class
 class Cars(Vehicle):
     def __init__(self, make, model, year, weight, needsMaintenance, tripsSinceMaintenance, isDriving):
@@ -58,11 +63,19 @@ class Cars(Vehicle):
     def stop(self):
         self.isDriving = False
 
+if not os.path.exists('save.json'):
+    carOne = {'company': 'Tesla', 'model': 'Model 3', 'year': 2018, 'weight': 1033, 'nm': None, 'tsm': 0, 'is_driving': False}
+    carTwo = {'company': 'Tesla', 'model': 'Model S', 'year': 2019, 'weight': 1019, 'nm': None, 'tsm': 0, 'is_driving': False}
+    carThree = {'company': 'Tesla', 'model': 'Model X', 'year': 2020, 'weight': 1023, 'nm': None, 'tsm': 0, 'is_driving': False}
+    with open('save.json', 'w') as json_file:
+          json.dump([carOne, carTwo, carThree], json_file)
+else:
+    carOne, carTwo, carThree = json.load(open('save.json'))
 
 # creating three instances from Cars class
-carOne = Cars("Tesla", "Model 3", 2018, 1033, None, 0, bool)
-carTwo = Cars("Tesla", "Model S", 2019, 1019, None, 0, bool)
-carThree = Cars("Tesla", "Model X", 2020, 1023, None, 0, bool)
+carOne = Cars(*list(carOne.values()))
+carTwo = Cars(*list(carTwo.values()))
+carThree = Cars(*list(carThree.values()))
 
 
 # Function to print car attributes         
@@ -174,6 +187,7 @@ def drive(car):
                         Choose()
 
                     elif car.drive_times == 'exit':
+                        save()
                         exit()
 
                     else:
@@ -188,12 +202,17 @@ def drive(car):
             Choose()
         
         elif car.drive_times == 'exit':
+            save()
             exit()
 
         else:
             cprint('\nKindly input a number', 'yellow')
             drive(car) 
-        
+
+
+def save():
+    with open('save.json', 'w') as json_file:
+          json.dump([carOne.makedict(), carTwo.makedict(), carThree.makedict()], json_file)
 
 # Function to show car models
 def Choose():
@@ -211,7 +230,7 @@ def Choose():
         elif models.casefold().replace(" ", "") == 'Model X'.casefold().replace(" ", ""):
             drive(carThree)
         elif models.casefold().replace(" ", "") == 'exit'.casefold().replace(" ", ""):
-
+            save()
             exit()
         else:
             print('Try again!')
@@ -222,7 +241,3 @@ def Choose():
 
 # Initializing the program
 Choose()
-
-
-
-
