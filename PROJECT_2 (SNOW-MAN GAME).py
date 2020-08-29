@@ -77,7 +77,7 @@ def display_game(draw_backgrd=True, draw_bottom=True, draw_mid=True, draw_top=Tr
     if welcome == True:
         penup()
         color("pink")
-        goto(-110, 250)
+        goto(-100, 250)
         write("Snow-Man Game", font=("Arial", 20, "bold"))
 
     if button1 == True:
@@ -150,7 +150,7 @@ def buttons(button1=True, button2=True, button3=True):
     return True
 
 # Drawing of Snow-man hands
-def hands(lefty=True, righty=True ):
+def hands(lefty=True, righty=True):
 
     if lefty == True:
         left(45)
@@ -203,7 +203,6 @@ def nose(draw_nose=True):
         hideturtle()
 
     return True
-
 
 # hidding of secrewor with the '#' symbol
 def dashed(secret_word):
@@ -290,7 +289,7 @@ def first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter):
 
         penup()
         color("lime")
-        goto(-80, -290)
+        goto(-100, -290)
         write(letter, font=("Arial", 50, "bold"))
 
         trys += 1
@@ -317,7 +316,7 @@ def second_guess(secret_word, trys, first_guessed_letter, second_guessed_letter)
 
         penup()
         color("lime")
-        goto(-40, -290)
+        goto(-60, -290)
         write(letter, font=("Arial", 50, "bold"))
 
         trys += 1
@@ -344,7 +343,7 @@ def third_guess(secret_word, trys, second_guessed_letter, third_guessed_letter):
 
         penup()
         color("lime")
-        goto(0, -290)
+        goto(-20, -290)
         write(letter, font=("Arial", 50, "bold"))
 
         trys += 1
@@ -371,7 +370,7 @@ def fourth_guess(secret_word, trys, third_guessed_letter, fourth_guessed_letter)
 
         penup()
         color("lime")
-        goto(40, -290)
+        goto(20, -290)
         write(letter, font=("Arial", 50, "bold"))
 
         trys += 1
@@ -396,7 +395,7 @@ def fifth_guess(secret_word, trys, fourth_guessed_letter, fifth_guessed_letter):
 
         penup()
         color("lime")
-        goto(80, -290)
+        goto(60, -290)
         write(letter, font=("Arial", 50, "bold"))
 
         trys += 1
@@ -418,15 +417,48 @@ def completed(trys):
     nose()
     trys_str = str(trys)
 
-    penup()
-    color("purple")
-    goto(-100, 180)
-    write("Congratulations", font=("Arial", 20, "bold"))
+    if len(trys_str) == 1:
+        penup()
+        color("purple")
+        goto(-67, 180)
+        write("Well-done!", font=("Arial", 20, "bold"))
 
-    penup()
-    color("yellow")
-    goto(-72, 150)
-    write("After " + trys_str + " trys", font=("Arial", 20, "bold"))
+        penup()
+        color("yellow")
+        goto(-80, 150)
+        write("After ", font=("Arial", 20, "bold"))
+
+        penup()
+        color("brown")
+        goto(0, 150)
+        write(trys_str, font=("Arial", 20, "bold"))
+
+        penup()
+        color("yellow")
+        goto(30, 150)
+        write("trys", font=("Arial", 20, "bold"))        
+
+    elif len(trys_str)>=2:
+        penup()
+        color("purple")
+        goto(-67, 180)
+        write("Well-done!", font=("Arial", 20, "bold"))
+
+        penup()
+        color("yellow")
+        goto(-80, 150)
+        write("After ", font=("Arial", 20, "bold"))
+
+        penup()
+        color("brown")
+        goto(-10, 150)
+        write(trys_str, font=("Arial", 20, "bold"))
+
+        penup()
+        color("yellow")
+        goto(30, 150)
+        write("trys", font=("Arial", 20, "bold"))
+
 
     enter = textinput("Do you wanna play again?", "1) Yes \n2) No")
     
@@ -459,9 +491,9 @@ def askHostToTypeSecretWord(repeatText=None):
 
     if type(secret_word) == str and len(secret_word) == 5:
         return secret_word.lower()
-    elif secret_word == 'back':
+    elif secret_word.casefold() == 'back'.casefold():
         return askGameType()
-    elif secret_word == "exit":
+    elif secret_word.casefold() == "exit".casefold():
         exit()
     else:
         return askHostToTypeSecretWord("Please the word should be exactly 5 letters! Type again or 'back' for Main Menu.\n")
@@ -481,7 +513,7 @@ def askGameType():
         first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter)
         return secret_word
 
-    elif game_type == "exit" or game_type == "3":
+    elif game_type.casefold() == "exit".casefold() or game_type == "3":
         exit()
 
     else:
@@ -494,4 +526,3 @@ display_game()
 
 window.listen()
 exitonclick()
-
