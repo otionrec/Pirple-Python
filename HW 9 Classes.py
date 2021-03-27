@@ -1,4 +1,10 @@
 #Homework Assignment #9: Classes
+
+'''
+The setters, getters and is_driving attributes are futile in this code: was only required by HW assignment
+Also, the auto-hauling function solves the Need Maintenance attribute so never mind
+'''
+
 import time
 import sys
 from termcolor import colored, cprint
@@ -16,6 +22,7 @@ class Vehicle:
         self.needsMaintenance = needsMaintenance
         self.tripsSinceMaintenance = tripsSinceMaintenance
 
+    '''
     #setters
     def setMake(self, make):
         self.make = make        
@@ -27,8 +34,14 @@ class Vehicle:
         self.year = year      
 
     def setWeight(self, weight):
-        self.weight = weight      
+        self.weight = weight     
+
+    def repair(self):
+        self.tripsSinceMaintenance = 0
+        self.needsMaintenance = False    
+    '''
     
+    '''
     #getters
     def getMake(self):
         return self.make
@@ -41,10 +54,7 @@ class Vehicle:
 
     def getWeight(self):
         return self.weight
-    
-    def repair(self):
-        self.tripsSinceMaintenance = 0
-        self.needsMaintenance = False
+    '''
 
     def makedict(self):
         return {'company': self.make, 'model': self.model, 'year': self.year, 'weight': self.weight, 'nm': self.needsMaintenance, 'tsm': self.tripsSinceMaintenance, 'is_driving': False}
@@ -55,8 +65,6 @@ class Cars(Vehicle):
         Vehicle.__init__(self, make, model, year, weight, needsMaintenance, tripsSinceMaintenance)
         #self.drive_times = drive_times
         self.isDriving = isDriving
-    
-    
     def driving(self):
         self.isDriving = True                 
     
@@ -76,7 +84,6 @@ else:
 carOne = Cars(*list(carOne.values()))
 carTwo = Cars(*list(carTwo.values()))
 carThree = Cars(*list(carThree.values()))
-
 
 # Function to print car attributes         
 def print_car_specs(car1, car2, car3):
@@ -119,6 +126,7 @@ def over_haul(car):
         blink(5)  
 
         car.tripsSinceMaintenance = (car.tripsSinceMaintenance + car.drive_times) - 100
+        car.needsMaintenance = False
         print_car_specs(carOne, carTwo, carThree)
         Choose()
     elif ans1.casefold() == 'no'.casefold():
@@ -209,7 +217,7 @@ def drive(car):
             cprint('\nKindly input a number', 'yellow')
             drive(car) 
 
-
+# function to save to a json file
 def save():
     with open('save.json', 'w') as json_file:
           json.dump([carOne.makedict(), carTwo.makedict(), carThree.makedict()], json_file)
@@ -236,8 +244,6 @@ def Choose():
             print('Try again!')
             continue
         return True
-
-
 
 # Initializing the program
 Choose()
