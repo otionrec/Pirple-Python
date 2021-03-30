@@ -1,10 +1,6 @@
 import random
 import turtle
 from turtle import *
-from playsound import playsound
-import time
-from multiprocessing import Process, Pipe, Queue
-from threading import Timer
 
 # Drawing of circles
 def draw_circle(turtle, color, x, y, radius):
@@ -50,41 +46,6 @@ words_list = [
 
 # The secret word
 secret_word = "#####"
-
-
-def timeout():
-    penup()
-    color("purple")
-    goto(-67, 180)
-    write("Delayed!", font=("Arial", 20, "bold"))
-
-    enter = textinput("Wanna play again?", "1) Yes \n2) No")
-    
-    if enter == "1" or enter.casefold() == "yes".casefold() or enter.casefold() == "y".casefold():
-        speed(0)
-        clear()
-        display_game()
-    elif enter == "2" or enter.casefold() == "no".casefold() or enter.casefold() == "n".casefold():
-        exit()   
-    else:
-        textinput("Not A Valid Input", "Try again!")
-        speed(0)
-        clear()        
-        display_game()
-
-    return True
-
-
-def ticking():
-    # duration is in seconds
-    t = Timer(150, timeout)
-    t.start()
-    first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter)
-    # wait for time completion
-    t.join()
-
-    return True
-
 
 # Creating the game
 def display_game():
@@ -156,7 +117,6 @@ def hands(lefty=True, righty=True):
 
     return True
 
-
 # Drawing of Snow-man eyes
 def eyes(draw_le=True, draw_re =True):
 
@@ -189,7 +149,7 @@ def nose(draw_nose=True):
 
     return True
 
-# hidding of secrewor with the '#' symbol
+# hidding of secretword with the '#' symbol
 def dashed(secret_word):
 
     unguessed_letters = ["#" for el in secret_word]
@@ -272,11 +232,8 @@ def five_guessed(fourth_guessed_letter, letter):
 
 fifth_guessed_letter = five_guessed(fourth_guessed_letter, letter)
 
-
 # Functions to allow for guesses
 def first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter):
-    ticking()
-    playsound(song, False)
     
     letter = input_letters(one=True, two=False, three=False, four=False, five=False)
     
@@ -461,12 +418,12 @@ def completed(trys):
         display_game()
     elif enter == "2" or enter.casefold() == "no".casefold() or enter.casefold() == "n".casefold():
         exit()   
-
     else:
         textinput("Not A Valid Input", "Try again!")
         speed(0)
         clear()        
         display_game()
+
     return True
 
 # Asking Computer to pick word
@@ -488,30 +445,28 @@ def askHostToTypeSecretWord(repeatText=None):
     elif secret_word.casefold() == "exit".casefold():
         exit()
     else:
-        return askHostToTypeSecretWord("Please the word should be exactly 5 letters! Type again or 'back' for Main Menu.\n")
+        return askHostToTypeSecretWord("Please the word should be exactly 5 letters! Try again or 'back' for Main Menu.\n")
 
 # Asking for game mode
 def askGameType():
     question = "Please choose"
     option = "1) One Player Mode\n2) Two Player Mode\n3) 'exit'\n"
     game_type = textinput(question, option)
+
     if type(game_type) == str and game_type == "1":
         secret_word = askComputerToPick()
         first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter)
         return secret_word
-
     elif type(game_type) == str and game_type == "2":
         secret_word = askHostToTypeSecretWord()
         first_guess(secret_word, trys, no_correct_guesses, first_guessed_letter)
         return secret_word
-
     elif game_type.casefold() == "exit".casefold() or game_type == "3":
         exit()
-
     else:
         return askGameType()
 
     return True
 
-
+# Initializing
 display_game()
